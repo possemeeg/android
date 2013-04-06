@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Unit filters -->
+
+    <string name="preference_key_unit_filter">unit_filter</string>
+    <string name="preference_title_unit_filter">Filter Units</string>
+    <string name="preference_summary_unit_filter">Select which units are shown</string>
+    <string name="preference_summary_unit_filter_sel">Units are shown in %s</string>
+    <string name="title_preferences_filters">Filters</string>
+    <string name="dialog_title_unit_filter">Filters</string>
+
+    <string-array name="unit_filter_values_names">
+        <item>Metric and Imperial</item>
+        <item>Metric Only</item>
+        <item>Imperial Only</item>
+    </string-array>
+    <string-array name="unit_filter_values">
+        <item>Both</item>
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
+    <string name="preference_default_unit_filter">Both</string>
+
+    <!-- ability -->
+    <string name="preference_key_ability_filter">ability_filter</string>
+    <string name="preference_title_ability_filter">Filter on Ability</string>
+    <string name="dialog_title_ability_filter">Filter on Ability</string>
+    <string name="preference_summary_ability_filter">Select approximate ability</string>
+    <string name="preference_summary_ability_filter_sel">Ability currently set to %s</string>
+
+    <string-array name="ability_filter_values_names">
+        <item>All</item>
+        <item>Take it easy</item>
+        <item>Average</item>
+        <item>Above Average</item>
+    </string-array>
+    <string-array name="ability_filter_values">
+        <item>All</item>
+        <item>Slow</item>
+        <item>Medium</item>
+        <item>Fast</item>
+    </string-array>
+        
+    <string name="preference_default_ability_filter">All</string>
+
+    <!-- debug finlter -->
+    <string name="preference_key_debug_output">debug_output</string>
+    <string name="preference_title_debug_output">Debug Output</string>
+    <string name="preference_summary_debug_output_on">Debug/Verbose output will be shown</string>
+    <string name="preference_summary_debug_output_off">Normal output will be shown</string>
+
+</resources>

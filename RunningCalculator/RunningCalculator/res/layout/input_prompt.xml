@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#A0000010"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1" >
+
+        <GridView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:horizontalSpacing="5dp"
+            android:numColumns="2"
+            android:verticalSpacing="5dp" 
+            android:layout_gravity="bottom"/>
+
+        <TextView
+            android:id="@+id/prompt_message"
+            style="@style/promptMessageStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_margin="16dp"
+            android:text="@string/input_prompt_text" />
+    </FrameLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/keyboard_background"
+        android:gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        android:stretchColumns="1"
+         >
+
+        <TableRow >
+            <TableLayout
+                android:id="@+id/button_parent_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000" >
+
+                <TableRow >
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="1" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="2" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="3" />
+                </TableRow>
+
+                <TableRow >
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="4" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="5" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="6" />
+                </TableRow>
+
+                <TableRow >
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="7" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="8" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="9" />
+                </TableRow>
+
+                <TableRow >
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text=":" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="0" />
+
+                    <Button
+                        style="@style/keyboardButtonStyle"
+                        android:text="." />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:orientation="vertical" 
+                android:layout_marginLeft="5dp">
+
+                <EditText
+                    android:id="@android:id/edit"
+                    style="@style/wideKeyboardButtonBaseStyle"
+                    android:layout_width="match_parent"
+                    android:editable="false"
+                    android:singleLine="true"
+					android:gravity="right|center_vertical"
+					/>
+
+                <TextView
+                    android:id="@+id/back_button"
+                    style="@style/wideKeyboardButtonBaseStyle"
+                    android:layout_width="fill_parent"
+                    android:text="@string/back_button" />
+
+                <TextView
+                    android:id="@+id/races_button"
+                    style="@style/wideKeyboardButtonBaseStyle"
+                    android:layout_width="fill_parent"
+                    android:text="@string/races_prompt" />
+
+                <TextView
+                    android:id="@+id/settings_button"
+                    style="@style/wideKeyboardButtonBaseStyle"
+                    android:layout_width="fill_parent"
+                    android:text="@string/settings_prompt" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

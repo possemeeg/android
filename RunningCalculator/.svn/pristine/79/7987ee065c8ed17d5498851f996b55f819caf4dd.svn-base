@@ -1,0 +1,62 @@
+package pmg.android.runningcalculator.data.splits;
+
+import pmg.android.runningcalculator.data.DistanceConverter;
+import pmg.android.runningcalculator.data.RunningConstants;
+
+public class Race {
+	private final double distanceInMetres;
+	private final double minSeconds;
+	private final double maxSeconds;
+	private final double maxSecondsPerKm;
+
+	public Race(double distanceInMetres) {
+		this.distanceInMetres = distanceInMetres;
+
+		// speed in seconds per km
+		maxSecondsPerKm = 
+				(((distanceInMetres - RunningConstants.SPRINT_DIST) / (RunningConstants.MARATHON_DIST - RunningConstants.SPRINT_DIST))) * 
+				(RunningConstants.PACE_MARATHON_SEC_PER_KM - RunningConstants.PACE_SPRINT_SEC_PER_KM)
+				+ RunningConstants.PACE_SPRINT_SEC_PER_KM;
+		
+		double distInKilometres = DistanceConverter.getMetresInKilometres(distanceInMetres);
+		this.minSeconds = maxSecondsPerKm * distInKilometres;
+		this.maxSeconds = RunningConstants.PACE_WALKING_SEC_PER_KM * distInKilometres;
+	}
+
+	public double getDistanceInMetres() {
+		return distanceInMetres;
+	}
+
+	public double getMinSeconds() {
+		return minSeconds;
+	}
+
+	public double getMaxSeconds() {
+		return maxSeconds;
+	}
+
+	public double getMaxSecondsPerKm() {
+		return maxSecondsPerKm;
+	}
+	
+	public static final Race R_200m = new Race(200);
+	public static final Race R_400m = new Race(400);
+	public static final Race R_800m = new Race(800);
+	public static final Race R_1000m = new Race(1000);
+	public static final Race R_1500m = new Race(1500);
+	public static final Race R_1mi = new Race(DistanceConverter.getMilesInMetres(1));
+	public static final Race R_2000m = new Race(2000);
+	public static final Race R_3000m = new Race(3000);
+	public static final Race R_2mi = new Race(DistanceConverter.getMilesInMetres(2));
+	public static final Race R_3mi = new Race(DistanceConverter.getMilesInMetres(3));
+	public static final Race R_5000m = new Race(5000);
+	public static final Race R_8000m = new Race(8000);
+	public static final Race R_5mi = new Race(DistanceConverter.getMilesInMetres(5));
+	public static final Race R_10km = new Race(10000);
+	public static final Race R_12km = new Race(12000);
+	public static final Race R_15km = new Race(15000);
+	public static final Race R_10mi = new Race(DistanceConverter.getMilesInMetres(10));
+	public static final Race R_20km = new Race(20000);
+	public static final Race R_HALF_MARATHON = new Race(RunningConstants.HALF_MARATHON);
+	public static final Race R_MARATHON = new Race(RunningConstants.MARATHON_DIST);
+}

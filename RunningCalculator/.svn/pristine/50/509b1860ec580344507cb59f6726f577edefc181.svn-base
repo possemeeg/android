@@ -1,0 +1,101 @@
+package pmg.android.runningcalculator;
+
+import java.util.List;
+
+import pmg.android.runningcalculator.data.CalculatedItem;
+import pmg.android.runningcalculator.data.CalculatedItemList;
+import pmg.android.runningcalculator.data.InputValue;
+import pmg.android.runningcalculator.data.InputValueList;
+import pmg.android.runningcalculator.data.ItemGenerator;
+import pmg.android.runningcalculator.view.DisplayStringFormatter;
+import pmg.android.runningcalculator.R;
+import android.app.Dialog;
+import android.app.ListActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.DataSetObserver;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+
+public class HomeActivity extends ListActivity {
+
+	private CalculatedItemList calculatedItemList;
+	private TextView numberButton;
+	private View settingsButton;
+	private InputValueList currentInputValueList;
+	private ItemGenerator itemGenerator;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		itemGenerator = new ItemGenerator(this);
+
+		calculatedItemList = new CalculatedItemList(this);
+
+		setupFields();
+		setupList();
+		IntentFilter intentFilter = new IntentFilter(CoreApplication.BROADCAST_ACTION_PREFERENCE_CHANGED);
+
+		getApplicationContext().registerReceiver(new BroadcastReceiver() {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				if(currentInputValueList != null)
+					calculatedItemList.refresh(itemGenerator.generateItems(currentInputValueList.getValues()));
+				else
+					calculatedItemList.clear();
+			}
+		}, intentFilter);
+
+		showPromptActivity();
+	}
+
+	private void setupFields() {
+		numberButton = (TextView) findViewById(R.id.number_button);
+		numberButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				showPromptActivity();
+			}
+		});
+		settingsButton = findViewById(R.id.settings_button);
+		settingsButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getBaseContext(), MainPreferenceActivity.class));
+			}
+		});
+	}
+
+	private void setupList() {
+		ListAdapter adapter = calculatedItemList.getAdapter();
+		setListAdapter(adapter);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+
+	private void showPromptActivity() {
+		Dialog inputPromptDialog = new InputPromptDialog(this, currentInputValueList, new InputPromptDialog.OnItemsChangedListener() {
+			
+			@Override
+			public void onItemsChanged(InputValueList inputValues, List<CalculatedItem> items) {
+				currentInputValueList = inputValues;
+				calculatedItemList.refresh(items);
+			}
+		});
+		inputPromptDialog.show();
+	
+	}
+}

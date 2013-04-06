@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">RunningCalculator</string>
+	<string name="enter_number">Enter a number:</string>
+	<string name="close_button">Close</string>
+	<string name="back_button">Back</string>
+	<string name="settings_menu_text">Settings</string>
+	<string name="activity_label_preferences">Preferences</string>
+	<string name="activity_label_input">Input value</string>
+	<string name="input_prompt_text">Enter a time, distance, speed or pace.\nExamples: 3, 4:02, 3100, 12.5 etc.</string>
+	<string name="enter_value_prompt">Set Value</string>
+	<string name="changed_settings_prompt">Filters</string>
+	
+
+</resources>

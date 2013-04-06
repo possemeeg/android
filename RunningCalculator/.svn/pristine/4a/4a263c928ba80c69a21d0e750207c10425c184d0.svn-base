@@ -1,0 +1,113 @@
+package pmg.android.runningcalculator.data.splits;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import pmg.android.runningcalculator.PreferenceValues;
+import pmg.android.runningcalculator.PreferenceValues.AbilityFilterValue;
+import pmg.android.runningcalculator.PreferenceValues.UnitFilterValue;
+import pmg.android.runningcalculator.data.CalculatedItem;
+import pmg.android.runningcalculator.data.InputValue;
+import pmg.android.runningcalculator.data.InputValue.InputValueType;
+import android.content.Context;
+
+public class RaceBreakdownCalculatedItem extends CalculatedItem {
+	private final RaceBreakdown raceBreakdown;
+	private final double timeInSeconds;
+
+	private RaceBreakdownCalculatedItem(Context context, InputValue inputValue, RaceBreakdown raceBreakdown, double timeInSeconds) {
+		super(context, inputValue);
+		this.raceBreakdown = raceBreakdown;
+		this.timeInSeconds = timeInSeconds;
+	}
+
+	@Override
+	public String getSynopsis() {
+		return raceBreakdown.getFormattedRaceAsString(getResources(), timeInSeconds);
+	}
+
+	@Override
+	public String getCalculation() {
+		return raceBreakdown.getFormattedCalculationAsString(getResources(), timeInSeconds);
+	}
+
+	// @formatter:off
+	public static RaceBreakdown[] races = new RaceBreakdown[0];
+	static {
+		ArrayList<RaceBreakdown> races = new ArrayList<RaceBreakdown>();
+		addShortItem(races, FormattedRace.FR_200m);
+		addShortItem(races, FormattedRace.FR_400m);
+		addShortItem(races, FormattedRace.FR_800m);
+		addShortItem(races, FormattedRace.FR_1000m);
+		addShortItem(races, FormattedRace.FR_1500m);
+		addShortItem(races, FormattedRace.FR_1mi);
+		addShortItem(races, FormattedRace.FR_1mi_km);
+		addShortItem(races, FormattedRace.FR_2000m);
+		addShortItem(races, FormattedRace.FR_3000m);
+		addShortItem(races, FormattedRace.FR_2mi);
+		addShortItem(races, FormattedRace.FR_2mi_km);
+		addShortItem(races, FormattedRace.FR_3mi);
+		addShortItem(races, FormattedRace.FR_3mi_km);
+		addShortItem(races, FormattedRace.FR_5000m);
+		addShortItem(races, FormattedRace.FR_8000m);
+		addShortItem(races, FormattedRace.FR_5mi);
+		addShortItem(races, FormattedRace.FR_5mi_km);
+		addShortItem(races, FormattedRace.FR_10km);
+		addNormalItem(races, FormattedRace.FR_12km);
+		addNormalItem(races, FormattedRace.FR_15km);
+		addNormalItem(races, FormattedRace.FR_10mi);
+		addNormalItem(races, FormattedRace.FR_10mi_km);
+		addNormalItem(races, FormattedRace.FR_20km);
+
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_km, FormattedLap.L_1km));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_km, FormattedSpeed.FS_kph_mps));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_mi, FormattedLap.L_1mi));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_mi, FormattedSpeed.FS_mph));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_km_mi, FormattedLap.L_1km));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_km_mi, FormattedLap.L_1mi));
+		races.add(new RaceBreakdown(FormattedRace.FR_HALF_MARATHON_km_mi, FormattedSpeed.FS_kph_mps_mph));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_km, FormattedLap.L_1km));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_km, FormattedSpeed.FS_kph_mps));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_mi, FormattedLap.L_1mi));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_mi, FormattedSpeed.FS_mph));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_km_mi, FormattedLap.L_1km));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_km_mi, FormattedLap.L_1mi));
+		races.add(new RaceBreakdown(FormattedRace.FR_MARATHON_km_mi, FormattedSpeed.FS_kph_mps_mph));
+		
+		RaceBreakdownCalculatedItem.races = races.toArray(RaceBreakdownCalculatedItem.races);
+		
+	}
+	private static void addShortItem(ArrayList<RaceBreakdown> races, FormattedRace race) {
+		races.add(new RaceBreakdown(race,FormattedLap.L_TRACK_LAP));
+		races.add(new RaceBreakdown(race,FormattedLap.L_TRACK_HALF_LAP));
+		addNormalItem(races, race);
+	}
+	private static void addNormalItem(ArrayList<RaceBreakdown> races, FormattedRace race) {
+		races.add(new RaceBreakdown(race, FormattedLap.L_1km));
+		races.add(new RaceBreakdown(race, FormattedLap.L_1mi));
+		races.add(new RaceBreakdown(race,FormattedSpeed.FS_kph_mps_mph));
+		races.add(new RaceBreakdown(race,FormattedSpeed.FS_kph_mps));
+		races.add(new RaceBreakdown(race,FormattedSpeed.FS_mph));
+	}
+
+	// @formatter:on
+
+	public static void generateItems(Context context, InputValue value, PreferenceValues preferenceValues, List<CalculatedItem> list) {
+		if (value.getValueType() != InputValueType.TIME_SECONDS)
+			return;
+
+		UnitFilterValue unitFilterPreference = preferenceValues.getUnitFilterPreference();
+		AbilityFilterValue abilityFilterPreference = preferenceValues.getAbilityFilterPreference();
+
+		for (RaceBreakdown race : races) {
+			if (value.getValue() >= race.getRace().getMinSeconds() && value.getValue() <= race.getRace().getMaxSeconds() &&
+					race.isViewableWithPreferences(unitFilterPreference) && 
+					PreferenceValues.isInAbility(value.getValue(), race.getRace().getMaxSeconds(), race.getRace().getMinSeconds(), 
+							abilityFilterPreference)
+			) {
+				list.add(new RaceBreakdownCalculatedItem(context, value, race, value.getValue()));
+			}
+		}
+
+	}
+}

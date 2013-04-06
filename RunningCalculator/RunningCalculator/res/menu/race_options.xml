@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+        <item android:id="@+id/add_race" android:title="@string/add_race_menu_text"></item>
+        <item android:id="@+id/reset_races" android:title="@string/reset_races_menu_text"></item>
+</menu>

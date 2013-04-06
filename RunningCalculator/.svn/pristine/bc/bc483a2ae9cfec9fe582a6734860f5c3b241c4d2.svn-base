@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pmg.android.runningcalculator"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk android:minSdkVersion="10" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".PromptActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/app_name"
+            android:name=".HomeActivity" >
+            <intent-filter >
+                <action android:name="pmg.android.runningcalculator.SHOW_DETAILS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+<!--                 <data android:mimeType="vnd.android.cursor.dir/entry_xref" /> -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/activity_label_preferences"
+            android:name=".MainPreferenceActivity" 
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter >
+                <action android:name=".MainPreferenceActivity" />
+
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

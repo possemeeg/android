@@ -1,0 +1,160 @@
+package pmg.android.runningcalculator.data.splits;
+
+import java.util.EnumSet;
+
+import pmg.android.runningcalculator.PreferenceValues.UnitFilterValue;
+import pmg.android.runningcalculator.R;
+import pmg.android.runningcalculator.data.DistanceConverter;
+import pmg.android.runningcalculator.data.DistanceUnit;
+import pmg.android.runningcalculator.view.DisplayStringFormatter;
+import android.content.res.Resources;
+import static java.util.EnumSet.of;
+
+public class FormattedRace {
+
+	private final Race race;
+	private final DistanceUnit distanceUnit;
+	private final DistanceUnit distanceUnitAlt;
+	private final int formattingStringId;
+	private final EnumSet<UnitFilterValue> unitTypes;
+
+	private FormattedRace(Race race, DistanceUnit distanceUnit, int formattingStringId, UnitFilterValue unitType) {
+		this(race, distanceUnit, DistanceUnit.UNSPECIFIED, formattingStringId, of(unitType));
+	}
+	private FormattedRace(Race race, DistanceUnit distanceUnit, int formattingStringId, EnumSet<UnitFilterValue> unitTypes) {
+		this(race, distanceUnit, DistanceUnit.UNSPECIFIED, formattingStringId, unitTypes);
+	}
+
+	private FormattedRace(Race race, DistanceUnit distanceUnit, DistanceUnit distanceUnitAlt, int formattingStringId, UnitFilterValue unitType) {
+		this(race, distanceUnit, distanceUnitAlt, formattingStringId, of(unitType));
+	}
+	private FormattedRace(Race race, DistanceUnit distanceUnit, DistanceUnit distanceUnitAlt, int formattingStringId, EnumSet<UnitFilterValue> unitTypes) {
+		super();
+		this.race = race;
+		this.distanceUnit = distanceUnit;
+		this.distanceUnitAlt = distanceUnitAlt;
+		this.formattingStringId = formattingStringId;
+		this.unitTypes = unitTypes;
+	}
+
+	public String getRaceAsString(Resources resorces, double seconds) {
+
+		if (distanceUnitAlt == DistanceUnit.UNSPECIFIED) {
+			return resorces.getString(formattingStringId,
+					DisplayStringFormatter.formatDistance(DistanceConverter.getMetresInUnit(race.getDistanceInMetres(), distanceUnit)),
+					DisplayStringFormatter.formatSecondsAsTime(resorces, seconds));
+		}
+
+		return resorces.getString(formattingStringId,
+				DisplayStringFormatter.formatDistance(DistanceConverter.getMetresInUnit(race.getDistanceInMetres(), distanceUnit)),
+				DisplayStringFormatter.formatDistance(DistanceConverter.getMetresInUnit(race.getDistanceInMetres(), distanceUnitAlt)),
+				DisplayStringFormatter.formatSecondsAsTime(resorces, seconds));
+	}
+
+	public Race getRace() {
+		return race;
+	}
+
+	public boolean isApplicableUnit(UnitFilterValue unitFilterPreference) {
+		return unitTypes.contains(unitFilterPreference);
+	}
+
+	public static final FormattedRace FR_200m;
+	public static final FormattedRace FR_400m;
+	public static final FormattedRace FR_800m;
+	public static final FormattedRace FR_1000m;
+	public static final FormattedRace FR_1500m;
+	public static final FormattedRace FR_1mi;
+	public static final FormattedRace FR_1mi_km;
+	public static final FormattedRace FR_2000m;
+	public static final FormattedRace FR_3000m;
+	public static final FormattedRace FR_2mi;
+	public static final FormattedRace FR_2mi_km;
+	public static final FormattedRace FR_3mi;
+	public static final FormattedRace FR_3mi_km;
+	public static final FormattedRace FR_5000m;
+	public static final FormattedRace FR_8000m;
+	public static final FormattedRace FR_5mi;
+	public static final FormattedRace FR_5mi_km;
+	public static final FormattedRace FR_10km;
+	public static final FormattedRace FR_12km;
+	public static final FormattedRace FR_8mi;
+	public static final FormattedRace FR_8mi_km;
+	public static final FormattedRace FR_15km;
+	public static final FormattedRace FR_10mi;
+	public static final FormattedRace FR_10mi_km;
+	public static final FormattedRace FR_20km;
+	public static final FormattedRace FR_HALF_MARATHON_km;
+	public static final FormattedRace FR_HALF_MARATHON_mi;
+	public static final FormattedRace FR_HALF_MARATHON_km_mi;
+	public static final FormattedRace FR_MARATHON_km;
+	public static final FormattedRace FR_MARATHON_mi;
+	public static final FormattedRace FR_MARATHON_km_mi;
+
+	static {
+		FR_200m = new FormattedRace(Race.R_200m, DistanceUnit.METRES, R.string.m_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_400m = new FormattedRace(Race.R_400m, DistanceUnit.METRES, R.string.m_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_800m = new FormattedRace(Race.R_800m, DistanceUnit.METRES, R.string.m_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_1000m = new FormattedRace(Race.R_1000m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_1500m = new FormattedRace(Race.R_1500m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_1mi = new FormattedRace(Race.R_1mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_1mi_km = new FormattedRace(Race.R_1mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_2000m = new FormattedRace(Race.R_2000m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_3000m = new FormattedRace(Race.R_3000m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_2mi = new FormattedRace(Race.R_2mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_2mi_km = new FormattedRace(Race.R_2mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_3mi = new FormattedRace(Race.R_3mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_3mi_km = new FormattedRace(Race.R_3mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_5000m = new FormattedRace(Race.R_5000m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_8000m = new FormattedRace(Race.R_8000m, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_5mi = new FormattedRace(Race.R_5mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_5mi_km = new FormattedRace(Race.R_5mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_10km = new FormattedRace(Race.R_10km, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_12km = new FormattedRace(Race.R_12km, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_8mi = new FormattedRace(Race.R_8mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_8mi_km = new FormattedRace(Race.R_8mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_15km = new FormattedRace(Race.R_15km, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_20km = new FormattedRace(Race.R_20km, DistanceUnit.KILOMETRES, R.string.km_in_time_synopsis,
+				of(UnitFilterValue.Both, UnitFilterValue.Metric, UnitFilterValue.Imperial));
+		FR_10mi = new FormattedRace(Race.R_10mi, DistanceUnit.MILES, R.string.mi_in_time_synopsis, 
+				UnitFilterValue.Imperial);
+		FR_10mi_km = new FormattedRace(Race.R_10mi, DistanceUnit.MILES, DistanceUnit.KILOMETRES, R.string.mi_km_in_time_synopsis, 
+				of(UnitFilterValue.Both, UnitFilterValue.Metric));
+		FR_HALF_MARATHON_km = new FormattedRace(Race.R_HALF_MARATHON, DistanceUnit.KILOMETRES,
+				R.string.half_marathon_km_in_time_synopsis, UnitFilterValue.Metric);
+		FR_HALF_MARATHON_mi = new FormattedRace(Race.R_HALF_MARATHON, DistanceUnit.MILES,
+				R.string.half_marathon_mi_in_time_synopsis, UnitFilterValue.Imperial);
+		FR_HALF_MARATHON_km_mi = new FormattedRace(Race.R_HALF_MARATHON, DistanceUnit.KILOMETRES, DistanceUnit.MILES,
+				R.string.half_marathon_km_mi_in_time_synopsis, UnitFilterValue.Both);
+		FR_MARATHON_km = new FormattedRace(Race.R_MARATHON, DistanceUnit.KILOMETRES,
+				R.string.marathon_km_in_time_synopsis, UnitFilterValue.Metric);
+		FR_MARATHON_mi = new FormattedRace(Race.R_MARATHON, DistanceUnit.MILES, R.string.marathon_mi_in_time_synopsis,
+				UnitFilterValue.Imperial);
+		FR_MARATHON_km_mi = new FormattedRace(Race.R_MARATHON, DistanceUnit.KILOMETRES, DistanceUnit.MILES,
+				R.string.marathon_km_mi_in_time_synopsis, UnitFilterValue.Both);
+		
+	}
+
+}
