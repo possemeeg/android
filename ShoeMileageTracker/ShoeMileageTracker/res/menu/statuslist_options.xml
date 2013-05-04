@@ -1,0 +1,7 @@
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:id="@+id/add_shoe" android:title="@string/add_shoe_menu_text"></item>
+        <item android:id="@+id/show_entries" android:title="@string/show_entries_menu_text"></item>
+        <item android:id="@+id/delete_retired" android:title="@string/delete_retired_menu_text"></item>
+        <item android:id="@+id/settings" android:title="@string/settings_menu_text"></item>
+    </menu>

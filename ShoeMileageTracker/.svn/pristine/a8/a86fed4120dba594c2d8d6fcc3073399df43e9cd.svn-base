@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preference_key_distance_unit">distance_unit</string>
+
+    <string-array name="distance_units">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="distance_unit_long_names">
+        <item>Kilometres</item>
+        <item>Miles</item>
+    </string-array>
+    <string-array name="distance_unit_short_names">
+        <item>km</item>
+        <item>mi</item>
+    </string-array>
+
+    <string name="default_distance_unit">Metric</string>
+
+    <string name="preference_key_show_retired_shoes">show_retired_shoes</string>
+    <string name="preference_key_show_retired_activities">show_retired_activities</string>
+        
+</resources>

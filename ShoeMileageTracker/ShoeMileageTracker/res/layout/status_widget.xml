@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/status_widget_background"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/newActivityButton"
+            android:layout_width="fill_parent"
+            android:layout_height="36dp"
+            android:layout_margin="4dp" 
+            />
+        <TextView
+            style="@style/status_list_text_style"
+            android:textSize="12sp"
+            android:layout_width="fill_parent"
+            android:layout_height="32dp"
+            android:layout_margin="4dp" 
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/distanceEditText" />
+        
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/launchAppButton"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:background="#00000000" />
+
+    </RelativeLayout>
+
+</LinearLayout>

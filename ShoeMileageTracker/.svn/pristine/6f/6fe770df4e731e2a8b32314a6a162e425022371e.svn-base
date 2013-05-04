@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pmg.android.showmileagetracker"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="11" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
+            android:label="@string/app_name"
+            android:name=".StatusActivity"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/new_entry_title"
+            android:name=".EditEntryActivity" >
+        </activity>
+        <activity
+            android:label="@string/new_shoe_title"
+            android:name=".EditShoeActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/shoe" />
+            </intent-filter>
+            <intent-filter >
+                <action android:name="android.intent.action.INSERT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/shoe" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/new_entry_title"
+            android:name=".EditEntryActivity"
+            android:theme="@style/android:style/Theme.Dialog" >
+            <intent-filter >
+                <action android:name="android.intent.action.EDIT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.item/entry_xref" />
+            </intent-filter>
+            <intent-filter >
+                <action android:name="android.intent.action.INSERT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/entry_xref" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/entry_list_title"
+            android:name=".EntryListActivity" >
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/entry_xref" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:label="@string/activity_label_preferences"
+            android:name=".ShoeTrackerPreferenceActivity" >
+            <intent-filter >
+                <action android:name=".ShoeTrackerPreferenceActivity" />
+
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".widget.ShowTrackerWidgetProvider" >
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget" />
+
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="pmg.android.shoemileagetracker.DB_UPDATE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:authorities="pmg.android.showmileagetracker.db.Shoes"
+            android:name=".db.ShoesProvider" >
+        </provider>
+    </application>
+
+</manifest>

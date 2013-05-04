@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="@string/title_general_preferences" >
+        <ListPreference
+            android:dialogTitle="@string/dialog_title_distance_unit_preference"
+            android:entries="@array/distance_unit_long_names"
+            android:entryValues="@array/distance_units"
+            android:defaultValue="@string/default_distance_unit"
+            android:key="@string/preference_key_distance_unit"
+            android:summary="@string/summary_distance_unit_preference"
+            android:title="@string/distance_unit_preference" />
+ 
+        <CheckBoxPreference
+            android:key="@string/preference_key_show_retired_shoes"
+            android:title="@string/preference_title_show_retired_shoes"
+            android:summaryOn="@string/preference_summary_on_show_retired_shoes" 
+            android:summaryOff="@string/preference_summary_off_show_retired_shoes"
+            android:defaultValue="false" 
+            />
+
+        <CheckBoxPreference
+            android:key="@string/preference_key_show_retired_activities"
+            android:title="@string/preference_title_show_retired_activities"
+            android:summaryOn="@string/preference_summary_on_show_retired_activities" 
+            android:summaryOff="@string/preference_summary_off_show_retired_activities"
+            android:defaultValue="true" 
+            />
+    </PreferenceCategory>
+    
+
+</PreferenceScreen>
