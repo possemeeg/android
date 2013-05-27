@@ -1,5 +1,7 @@
 package com.possemeeg.android.programabletimer.timer;
 
+import com.possemeeg.android.programabletimer.content.TimerItem;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -16,14 +18,16 @@ public class TimerService extends Service {
 
 	public static final String TIMER_SEQUENCE = "timer.sequence";
 
-	public enum BroadcastReason {
+	enum BroadcastReason {
 		STATE_CHANGED, TICK, TIMER_CHANGE
 	}
 
-	public static final String BROADCAST_INTENT = "com.possemeeg.android.programabletimer.timer.TimerService";
-	public static final String BROADCAST_DATA_STATUS = "Status";
-	public static final String BROADCAST_DATA_TIMER_ID = "TimerId";
-	public static final String BROADCAST_DATA_REASON = "Reason";
+	static final String BROADCAST_INTENT = "com.possemeeg.android.programabletimer.timer.TimerService";
+	static final String BROADCAST_DATA_STATUS = "Status";
+	static final String BROADCAST_DATA_TIMER_ID = "TimerId";
+	static final String BROADCAST_DATA_REASON = "Reason";
+	static final String BROADCAST_DATA_TOTAL = "Total";
+	static final String BROADCAST_DATA_ELAPSED = "Elapsed";
 
 	public class TimerBinder extends Binder {
 		public void start() {
@@ -33,14 +37,6 @@ public class TimerService extends Service {
 		public void stop() {
 			setTimerContextStatus(TimerStatus.STOPPED);
 		}
-
-//		public void reset() {
-//			final TimerContext timerContext = getTimerContext();
-//			if (timerContext != null) {
-//				timerContext.reset();
-//			}
-//		}
-
 	}
 
 	private final Object syncObject = new Object();
@@ -68,10 +64,6 @@ public class TimerService extends Service {
 
 	public TimerService() {
 		timerBinder = new TimerBinder();
-	}
-
-	private TimerContext getTimerContext() {
-		return timerContext;
 	}
 
 	private void setTimerContextStatus(final TimerStatus status) {
@@ -105,6 +97,7 @@ public class TimerService extends Service {
 
 	@Override
 	public void onDestroy() {
+		Log.i(TAG, "Destroying service");
 		synchronized (syncObject) {
 			if (timerContext != null) {
 				timerContext.setStatus(TimerStatus.INTERUPTED);
@@ -124,32 +117,35 @@ public class TimerService extends Service {
 			if (timerContext != null) {
 				throw new AssertionError("Unexpected situation. TimerContext should be null.");
 			}
-			return (timerContext = new TimerContext(new TimerContext.StateUpdateHandler() {
+			return (timerContext = new TimerContext(new TimerUpdatesHandler() {
 
 				@Override
-				public void statusChanged(final TimerStatus newStatus) {
-					broadcastStatus(BroadcastReason.STATE_CHANGED, newStatus);
+				public void tick(final long elapsed, final long total) {
+					broadcastStatus(BroadcastReason.TICK, new Intent(BROADCAST_INTENT).putExtra(BROADCAST_DATA_ELAPSED, elapsed).putExtra(BROADCAST_DATA_TOTAL, total));
 				}
 
 				@Override
-				public void tick() {
-					broadcastStatus(BroadcastReason.TICK, TimerStatus.RUNNING);
+				public void statusChange(final TimerStatus newStatus) {
+					broadcastStatus(BroadcastReason.STATE_CHANGED, new Intent(BROADCAST_INTENT).putExtra(BROADCAST_DATA_STATUS, newStatus));
+
 				}
 
 				@Override
-				public void timerConnected(final String timerId, final TimerStatus status) {
-					broadcastStatus(BroadcastReason.TIMER_CHANGE, status, timerId);
+				public void componentChange(final String timerId) {
+					broadcastStatus(BroadcastReason.TIMER_CHANGE, new Intent(BROADCAST_INTENT).putExtra(BROADCAST_DATA_TIMER_ID, timerId));
+
 				}
 			}));
 		}
 	}
 
 	private void runSequence(final TimerItem timer) {
+		Log.i(TAG, "Enter timer sequence");
 		try {
 			final TimerContext timerContext = createTimerContext();
-//			timerContext.reset();
+			final TimerRunner runner = TimerRunner.createRunner(timer);
 
-			if(timer.run(timerContext))
+			if(runner.run(timerContext))
 				timerContext.setStatus(TimerStatus.COMPLETED);
 
 		} catch (final InterruptedException e) {
@@ -157,18 +153,12 @@ public class TimerService extends Service {
 		} finally {
 			resetTimerContext();
 		}
+		Log.i(TAG, "Exit timer sequence");
 	}
 
-	private void broadcastStatus(final BroadcastReason event, final TimerStatus status) {
-		broadcastStatus(event, status, null);
-	}
-	private void broadcastStatus(final BroadcastReason event, final TimerStatus status, final String timerId) {
-		final Intent intent = new Intent(BROADCAST_INTENT).putExtra(BROADCAST_DATA_STATUS, status).putExtra(BROADCAST_DATA_REASON, event);
-		if(intent != null){
-			intent.putExtra(BROADCAST_DATA_TIMER_ID, timerId);
-		}
-
-		LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+	private void broadcastStatus(final BroadcastReason event, final Intent intent) {
+		Log.d(TAG, "Broadcasting from timer service");
+		LocalBroadcastManager.getInstance(this).sendBroadcast(intent.putExtra(BROADCAST_DATA_REASON, event));
 	}
 
 	@Override

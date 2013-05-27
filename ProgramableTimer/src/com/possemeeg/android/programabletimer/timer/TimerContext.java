@@ -1,22 +1,19 @@
 package com.possemeeg.android.programabletimer.timer;
 
+import com.possemeeg.android.programabletimer.content.TimerItem;
+
 import android.os.SystemClock;
 
 public class TimerContext {
-	private long effectiveStartTime;
 	private TimerStatus currentStatus;
 	private final Object syncObject = new Object();
-	private final StateUpdateHandler statusChangedHandler;
+	private final TimerUpdatesHandler updatesHandler;
 	private final static int STEP_MILLIS = 1000;
+	private long effectiveStartTime;
+	private TimerItem currentTimer;
 
-	public interface StateUpdateHandler {
-		void statusChanged(final TimerStatus newStatus);
-		void tick();
-		void timerConnected(String timerId, final TimerStatus status);
-	}
-
-	TimerContext(final StateUpdateHandler statusChangedHandler) {
-		this.statusChangedHandler = statusChangedHandler;
+	TimerContext(final TimerUpdatesHandler statusChangedHandler) {
+		this.updatesHandler = statusChangedHandler;
 		currentStatus = TimerStatus.STOPPED;
 	}
 
@@ -57,15 +54,16 @@ public class TimerContext {
 			currentStatus = status;
 			syncObject.notify();
 		}
-		statusChangedHandler.statusChanged(currentStatus);
+		updatesHandler.statusChange(currentStatus);
 	}
 
 	public void tick() throws InterruptedException {
-		statusChangedHandler.tick();
+		updatesHandler.tick(SystemClock.uptimeMillis() - effectiveStartTime, currentTimer.getTotalTime() );
 	}
 
-	public void connect(final String timerId) throws InterruptedException {
+	public void connect(final TimerItem timer) throws InterruptedException {
 		effectiveStartTime = SystemClock.uptimeMillis();
-		statusChangedHandler.timerConnected(timerId, getCurrentStatus(0));
+		currentTimer = timer;
+		updatesHandler.componentChange(timer.getTimerId());
 	}
 }

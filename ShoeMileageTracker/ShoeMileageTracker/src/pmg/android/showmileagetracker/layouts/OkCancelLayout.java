@@ -19,11 +19,11 @@ public class OkCancelLayout extends LinearLayout implements OnClickListener {
 		void onSave();
 		void finish();
 	}
-	
+
 	private ClickHandler clickHandler;
 	private SaveHandler saveHandler;
 
-	public OkCancelLayout(Context context, AttributeSet attrs) {
+	public OkCancelLayout(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 
 		LayoutInflater.from(context).inflate(R.layout.ok_cancel, this, true);
@@ -32,18 +32,20 @@ public class OkCancelLayout extends LinearLayout implements OnClickListener {
 		((Button) findViewById(R.id.cancel)).setOnClickListener(this);
 	}
 
-	public void setClickHandler(ClickHandler handler) {
+	public void setClickHandler(final ClickHandler handler) {
 		this.clickHandler = handler;
 	}
-	public void setSaveHandler(SaveHandler handler) {
+	public void setSaveHandler(final SaveHandler handler) {
 		this.saveHandler = handler;
 		this.clickHandler = new ClickHandler()
 		{
+			@Override
 			public void onOk()
 			{
 				saveHandler.onSave();
 				saveHandler.finish();
 			}
+			@Override
 			public void onCancel()
 			{
 				saveHandler.finish();
@@ -52,7 +54,7 @@ public class OkCancelLayout extends LinearLayout implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(final View arg0) {
 		if (clickHandler == null)
 			return;
 
